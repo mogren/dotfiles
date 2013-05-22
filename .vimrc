@@ -1,7 +1,7 @@
 set nocompatible
 
 " A nice dark colorscheme
-colorscheme koehler
+colorscheme darkblue
 
 " Use nice filespecific syntax highlighting
 filetype plugin indent on
@@ -64,7 +64,6 @@ nnoremap <silent> j gj
 " Disable menu when running gVim
 if has("gui_running")
     set guioptions-=T
-    set guicursor=a:blinkon0
 endif
 
 " Set vim to chdir for each file you open
