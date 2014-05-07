@@ -2,6 +2,7 @@
 \pset null '∅'
 \set HISTCONTROL ignoredups
 \set COMP_KEYWORD_CASE upper
+\set PROMPT1 '%[%033[33;1m%]%x%[%033[0m%]%[%033[1m%]%/%[%033[0m%]%R%# '
 -- Large indexes that are rarely used
 \set trashindexes '(SELECT s.schemaname as sch, s.relname as rel, s.indexrelname as idx, s.idx_scan as scans, pg_size_pretty(pg_relation_size(s.relid)) as ts, pg_size_pretty(pg_relation_size(s.indexrelid)) as "is" FROM pg_stat_user_indexes s JOIN pg_index i on i.indexrelid=s.indexrelid LEFT JOIN pg_constraint c on i.indrelid=c.conrelid AND array_to_string(i.indkey, '' '') = array_to_string(c.conkey, '' '') WHERE i.indisunique is false AND pg_relation_size(s.relid) > 100000 AND s.idx_scan < 10000 AND c.confrelid is null ORDER BY s.idx_scan ASC, pg_relation_size(s.relid) desc)';
 -- Foreign keys that should have a corresponding index
