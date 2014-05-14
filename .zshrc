@@ -9,7 +9,7 @@ if [ -f ~/.profile ] ; then
 fi
 
 # Exports
-export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+export PATH=/usr/local/bin:/opt/local/bin:/opt/local/sbin:$PATH
 export MANPATH=/opt/local/share/man:$MANPATH
 export EDITOR=vim
 
@@ -31,6 +31,9 @@ RPROMPT=' %B%~%b'   # prompt for right side of screen
 alias mv='nocorrect mv'       # no spelling correction on mv
 alias cp='nocorrect cp'       # no spelling correction on cp
 alias mkdir='nocorrect mkdir' # no spelling correction on mkdir
+alias ll="ls -ll"
+alias lsd="find . -maxdepth 1 -type d"
+alias gl='git log --graph --abbrev-commit --abbrev=6 --date=iso --pretty=format:"(%h) %an, %ad: %s %C(yellow)%d%Creset"'
 
 # ls settings
 #eval  `dircolors -b`
@@ -48,8 +51,6 @@ else
     bindkey '^[OH' beginning-of-line     # Home
     bindkey '^[OF' end-of-line           # End of line 
 fi
-alias ll="ls -ll"
-alias lsd="find . -maxdepth 1 -type d"
 
 # History settings
 HISTFILE=~/.zshhistory
