@@ -16,6 +16,16 @@ export EDITOR=vim
 # Autoloads 
 autoload -U compinit
 compinit
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' enable git svn
+zstyle ':vcs_info:*' check-for-changes true
+zstyle ':vcs_info:*' stagedstr ' S'
+zstyle ':vcs_info:*' unstagedstr ' U'
+zstyle ':vcs_info:*' actionformats ' %F{5}[%F{2}%b%F{3}%c%u%m%F{3}|%F{1}%a%F{5}]%f'
+zstyle ':vcs_info:*' formats       ' %F{5}[%F{2}%b%F{3}%c%u%m%F{5}]%f'
+precmd() {
+    vcs_info
+}
 
 # Environment variables
 
@@ -24,7 +34,8 @@ compinit
 #. ~/.keychain/${HOSTNAME}-sh
 
 # Prompts
-PROMPT='%n@%m> '	# left prompt
+setopt prompt_subst
+PROMPT='%n@%m${vcs_info_msg_0_}> '	# left prompt
 RPROMPT=' %B%~%b'   # prompt for right side of screen
 
 # Aliases
