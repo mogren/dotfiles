@@ -18,7 +18,7 @@
 -- Show how much the indexes are being used
 \set index_stats '(SELECT s.relname, s.seq_tup_read + s.idx_tup_fetch usage, (s.idx_tup_fetch/s.seq_tup_read::float)::decimal(18,4) index_ratio, s.seq_tup_read, s.idx_tup_fetch, s.seq_scan, s.n_live_tup, ((io.heap_blks_hit + io.idx_blks_hit)/((io.heap_blks_read + io.idx_blks_read)::float))::decimal(18,4) cache_hit_ratio FROM pg_stat_user_tables s INNER JOIN pg_statio_user_tables io ON s.relid = io.relid WHERE s.seq_tup_read + s.idx_tup_fetch > 0 AND s.n_live_tup > 1000 ORDER BY usage desc, cache_hit_ratio desc, index_ratio ASC, s.seq_scan desc, s.n_live_tup desc)';
 -- List unused indexes
-\set index_never_used '(SELECT indexrelid::regclass as index, relid::regclass as table FROM pg_stat_user_indexes JOIN pg_index USING (indexrelid) WHERE idx_scan = 0 AND indisunique is false)';
+\set index_never_used '(SELECT indexrelid::regclass as index, relid::regclass as table FROM pg_stat_user_indexes JOIN pg_index USING (indexrelid) WHERE idx_scan = 0 AND indisunique is false order by relid::regclass)';
 -- Show duplicate indexes
 \set index_dups '(SELECT indrelid::regclass as table, array_agg(indexrelid::regclass) as duplicates FROM pg_index group by indrelid, indkey having count(*) > 1)';
 -- Show indexes that also exists in multi-key indexes
