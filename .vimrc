@@ -146,3 +146,5 @@ else
     " :h head (last path component removed)
     " gs/ /\\ /  replace " " with "\ "
 endif
+
+let g:neocomplete#enable_at_startup = 1
