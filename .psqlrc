@@ -1,5 +1,6 @@
 \timing
 \pset null '∅'
+\set ON_ERROR_ROLLBACK interactive
 \set HISTCONTROL ignoredups
 \set COMP_KEYWORD_CASE upper
 \set PROMPT1 '%[%033[33;1m%]%x%[%033[0m%]%[%033[1m%]%/%[%033[0m%]%R%# '
@@ -23,5 +24,9 @@
 \set index_dups '(SELECT indrelid::regclass as table, array_agg(indexrelid::regclass) as duplicates FROM pg_index group by indrelid, indkey having count(*) > 1)';
 -- Show indexes that also exists in multi-key indexes
 \set index_in_multi '(SELECT a.indrelid::regclass as table_name, a.indexrelid::regclass, b.indexrelid::regclass FROM (SELECT *,array_to_string(indkey,\' \') as cols FROM pg_index) a JOIN (SELECT *,array_to_string(indkey,\' \') as cols FROM pg_index) b on (a.indrelid=b.indrelid AND a.indexrelid > b.indexrelid AND not a.indisunique AND not b.indisunique AND ((a.cols LIKE b.cols||\'%\' AND coalesce(substr(a.cols,length(b.cols)+1,1),\' \')=\' \') OR (b.cols LIKE a.cols||\'%\' AND coalesce(substr(b.cols,length(a.cols)+1,1),\' \')=\' \'))) ORDER BY table_name)';
+-- Show connected slaves
+\set slaves '(SELECT host(client_addr) as slave, state as state, backend_start as started FROM pg_stat_replication)';
+-- Show byde lag of slaves
 \set byte_lag 'SELECT client_addr, sent_offset - (replay_offset - (sent_xlog - replay_xlog) * 255 * 16 ^ 6 ) AS byte_lag FROM (SELECT client_addr, (\'x\' || lpad(split_part(sent_location,   \'/\', 1), 8, \'0\'))::bit(32)::bigint AS sent_xlog, (\'x\' || lpad(split_part(replay_location, \'/\', 1), 8, \'0\'))::bit(32)::bigint AS replay_xlog, (\'x\' || lpad(split_part(sent_location, \'/\', 2), 8, \'0\'))::bit(32)::bigint AS sent_offset, (\'x\' || lpad(split_part(replay_location, \'/\', 2), 8, \'0\'))::bit(32)::bigint AS replay_offset FROM pg_stat_replication) AS s';
+-- Show cache hitrate
 \set cache_hitrate 'SELECT \'index hit rate\' as name, (sum(idx_blks_hit) - sum(idx_blks_read)) / sum(idx_blks_hit + idx_blks_read) as ratio FROM pg_statio_user_indexes union all SELECT \'cache hit rate\' as name, case sum(idx_blks_hit) when 0 then \'NaN\'::numeric else to_char((sum(idx_blks_hit) - sum(idx_blks_read)) / sum(idx_blks_hit + idx_blks_read), \'99.99\')::numeric end as ratio FROM pg_statio_user_indexes';
