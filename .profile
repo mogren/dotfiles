@@ -11,7 +11,7 @@ function setjdk() {
  function removeFromPath() {  
   export PATH=$(echo $PATH | sed -E -e "s;:$1;;" -e "s;$1:?;;")  
  }
-setjdk 1.7
+setjdk 1.8
 export GOPATH=/usr/local/go
 export PATH=$PATH:/usr/local/opt/go/libexec/bin:$GOPATH/bin
 export PATH=/Users/cm/src/northshine/go_appengine:$PATH
