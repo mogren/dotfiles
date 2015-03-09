@@ -44,7 +44,10 @@ alias cp='nocorrect cp'       # no spelling correction on cp
 alias mkdir='nocorrect mkdir' # no spelling correction on mkdir
 alias ll="ls -ll"
 alias lsd="find . -maxdepth 1 -type d"
-alias gl='git log --graph --abbrev-commit --abbrev=6 --date=iso --pretty=format:"(%h) %an, %ad: %s %C(yellow)%d%Creset"'
+alias gl='git log --pretty=format:"%Cgreen%h %Creset %s %Cblueby %an (%ar) %Cred %d" --graph'
+alias gs="git status"
+alias gd="git diff"
+alias gc="git commit -m"
 
 # ls settings
 #eval  `dircolors -b`
@@ -209,5 +212,4 @@ bindkey '^[[A' history-beginning-search-backward
 bindkey '^[[B' history-beginning-search-forward
 bindkey '^P' up-line-or-history
 bindkey '^N' down-line-or-history
-
 bindkey '^[[Z' reverse-menu-complete # Shift-tab reverse completion
