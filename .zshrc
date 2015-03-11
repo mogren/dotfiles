@@ -48,6 +48,7 @@ alias gl='git log --pretty=format:"%Cgreen%h %Creset %s %Cblueby %an (%ar) %Cred
 alias gs="git status"
 alias gd="git diff"
 alias gc="git commit -m"
+alias gca="git commit -a -m"
 
 # ls settings
 #eval  `dircolors -b`
