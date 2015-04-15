@@ -49,6 +49,7 @@ alias gs="git status"
 alias gd="git diff"
 alias gc="git commit -m"
 alias gca="git commit -a -m"
+alias grio="git rebase -i origin/master"
 
 # ls settings
 #eval  `dircolors -b`
