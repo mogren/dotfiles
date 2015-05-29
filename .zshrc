@@ -49,7 +49,9 @@ alias gs="git status"
 alias gd="git diff"
 alias gc="git commit -m"
 alias gca="git commit -a -m"
+alias gcom="git checkout master"
 alias grio="git rebase -i origin/master"
+alias git-delete-local-branches="git branch --merged | grep -v \* | xargs git branch -D "
 
 # ls settings
 #eval  `dircolors -b`
