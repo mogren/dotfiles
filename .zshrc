@@ -211,6 +211,8 @@ setopt                       \
      NO_verbose              \
         zle
 
+bindkey -v
+
 # create a zkbd compatible hash;
 # to add other keys to this hash, see: man 5 terminfo
 typeset -A key
@@ -231,8 +233,8 @@ key[PageDown]=${terminfo[knp]}
 [[ -n "${key[End]}"     ]] && bindkey "${key[End]}"    end-of-line
 [[ -n "${key[Insert]}"  ]] && bindkey "${key[Insert]}" overwrite-mode
 [[ -n "${key[Delete]}"  ]] && bindkey "${key[Delete]}" delete-char
-[[ -n "${key[Up]}"      ]] && bindkey "${key[Up]}"     up-line-or-history
-[[ -n "${key[Down]}"    ]] && bindkey "${key[Down]}"   down-line-or-history
+[[ -n "${key[Up]}"      ]] && bindkey "${key[Up]}"     history-beginning-search-backward
+[[ -n "${key[Down]}"    ]] && bindkey "${key[Down]}"   history-beginning-search-forward
 [[ -n "${key[Left]}"    ]] && bindkey "${key[Left]}"   backward-char
 [[ -n "${key[Right]}"   ]] && bindkey "${key[Right]}"  forward-char
 
@@ -247,7 +249,6 @@ function zle-line-finish () {
 zle -N zle-line-init
 zle -N zle-line-finish
 
-bindkey -v
 bindkey '^[[A' history-beginning-search-backward
 bindkey '^[[B' history-beginning-search-forward
 bindkey '^P' up-line-or-history
