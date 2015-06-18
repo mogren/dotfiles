@@ -5,6 +5,8 @@ execute pathogen#infect()
 set autoindent
 set backspace=indent,eol,start
 set complete-=i
+set tabstop=4
+set shiftwidth=4
 set smarttab
 set expandtab
 
@@ -79,9 +81,6 @@ if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
 endif
 
 inoremap <C-U> <C-G>u<C-U>
-
-" vim:set ft=vim et sw=2:
-
 
 " A nice dark colorscheme
 colorscheme darkblue
