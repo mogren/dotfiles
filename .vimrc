@@ -1,5 +1,3 @@
-set nocompatible
-
 silent! execute pathogen#infect()
 
 set autoindent
@@ -14,6 +12,9 @@ set nrformats-=octal
 
 set ttimeout
 set ttimeoutlen=100
+
+" Disable mouse click to go to position
+set mouse-=a
 
 set incsearch
 set hlsearch
@@ -52,10 +53,6 @@ if has('path_extra')
   setglobal tags-=./tags tags^=./tags;
 endif
 
-if &shell =~# 'fish$'
-  set shell=/bin/bash
-endif
-
 set autoread
 set fileformats+=mac
 
@@ -88,6 +85,11 @@ colorscheme darkblue
 " Use nice filespecific syntax highlighting
 filetype plugin indent on
 syntax on
+
+if has("gui_macvim")
+    let macvim_hig_shift_movement = 1
+    set mouse=niv
+endif
 
 " Show all commands and settings you can tab-complete to
 set wildmode=longest,list
@@ -122,6 +124,9 @@ inoremap :wq <Esc>
 map N Nzz
 map n nzz
 
+vmap q <gv
+vmap <TAB> >gv
+
 " Previous and next buffer, useful together with 'gf'
 nmap gb :bN<cr>
 nmap gn :bn<cr>
@@ -146,6 +151,6 @@ else
     " gs/ /\\ /  replace " " with "\ "
 endif
 
-let g:neocomplete#enable_at_startup = 1
+"let g:neocomplete#enable_at_startup = 1
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
