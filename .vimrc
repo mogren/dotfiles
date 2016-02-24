@@ -120,6 +120,10 @@ cmap w!! w !sudo tee % >/dev/null
 inoremap jj <Esc>
 inoremap :wq <Esc>
 
+" Rebind Ctrl-C in insert mode to not only leave insert mode without firing
+" InsertLeave events, but also to actually undo the current insert operation
+inoremap <C-c> <C-c>u
+
 " Center on the match you searched for
 map N Nzz
 map n nzz
