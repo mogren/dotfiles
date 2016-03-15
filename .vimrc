@@ -18,10 +18,6 @@ set mouse-=a
 
 set incsearch
 set hlsearch
-" Use <C-L> to clear the highlighting of :set hlsearch.
-if maparg('<C-L>', 'n') ==# ''
-  nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
-endif
 
 set laststatus=2
 set ruler
@@ -124,16 +120,24 @@ inoremap :wq <Esc>
 " InsertLeave events, but also to actually undo the current insert operation
 inoremap <C-c> <C-c>u
 
+" Remap window navigation
+map <C-J> <C-W>j<C-W>_
+map <C-K> <C-W>k<C-W>_
+map <C-L> <C-W>l<C-W>_
+map <C-H> <C-W>h<C-W>_
+
 " Center on the match you searched for
 map N Nzz
 map n nzz
 
-vmap q <gv
-vmap <TAB> >gv
+vnoremap < <gv
+vnoremap > >gv
 
 " Previous and next buffer, useful together with 'gf'
 nmap gb :bN<cr>
 nmap gn :bn<cr>
+" Yank from the cursor to the end of the line, to be consistent with C and D.
+nnoremap Y y$
 
 " Move up and down one line at a time even on linewrapped rows.
 nnoremap <silent> k gk
@@ -142,6 +146,8 @@ nnoremap <silent> j gj
 " Disable menu when running gVim
 if has("gui_running")
     set guioptions-=T
+    map <C-Tab> <Esc>:tabnext<CR>
+    map <C-S-Tab> <Esc>:tabprev<CR>
 endif
 
 " Set vim to chdir for each file you open
