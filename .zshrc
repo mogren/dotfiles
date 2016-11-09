@@ -47,6 +47,8 @@ alias lsd="find . -maxdepth 1 -type d"
 alias gl='git log --pretty=format:"%Cgreen%h %Creset %s %Cblueby %an (%ar) %Cred %d" --graph'
 alias gs="git status"
 alias gd="git diff"
+alias gdo="git diff origin/master"
+alias gds="git stash show -p 'stash@{0}'"
 alias gc="git commit -m"
 alias gca="git commit -a -m"
 alias gcom="git checkout master"
