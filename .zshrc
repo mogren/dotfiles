@@ -54,6 +54,9 @@ alias gca="git commit -a -m"
 alias gcom="git checkout master"
 alias grio="git rebase -i origin/master"
 alias git-delete-local-branches="git branch --merged | grep -v \* | xargs git branch -D "
+# From https://stackoverflow.com/a/56026209/4992
+alias gprunecheck='git checkout -q master && git for-each-ref refs/heads/ "--format=%(refname:short)" | while read branch; do mergeBase=$(git merge-base master $branch) && [[ $(git cherry master $(git commit-tree $(git rev-parse "$branch^{tree}") -p $mergeBase -m _)) == "-"* ]] && echo "$branch is merged into master and can be deleted"; done'
+alias gprunedelete='git checkout -q master && git for-each-ref refs/heads/ "--format=%(refname:short)" | while read branch; do mergeBase=$(git merge-base master $branch) && [[ $(git cherry master $(git commit-tree $(git rev-parse "$branch^{tree}") -p $mergeBase -m _)) == "-"* ]] && git branch -D $branch; done'
 
 # ls settings
 #eval  `dircolors -b`
