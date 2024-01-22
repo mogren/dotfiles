@@ -17,15 +17,15 @@
 -- Show active transactions
 \set active '(SELECT datname, pid, now() - query_start AS runtime, case when waiting then \'WAIT\' else \'\' end AS wait, query FROM pg_stat_activity WHERE query <> \'<IDLE>\' AND pid <> pg_backend_pid() ORDER BY runtime DESC)';
 -- List the most common full table scans.
-\set seq_scans '(SELECT relname, seq_scan, seq_tup_read, idx_scan, idx_tup_fetch FROM pg_stat_all_tables WHERE schemaname=\'public\' AND pg_relation_size(relname::regclass)>50000 AND seq_tup_read > 100000 AND seq_scan > 9 ORDER BY seq_scan desc)';
+\set seq_scans '(SELECT relname, seq_scan, seq_tup_read, idx_scan, idx_tup_fetch FROM pg_stat_all_tables WHERE schemaname=\'public\' AND pg_relation_size(quote_ident(relname)::regclass)>50000 AND seq_tup_read > 100000 AND seq_scan > 9 ORDER BY seq_scan desc)';
 -- Show how much the indexes are being used
 \set index_stats '(SELECT s.relname, s.seq_tup_read + s.idx_tup_fetch usage, (s.idx_tup_fetch/s.seq_tup_read::float)::decimal(18,4) index_ratio, s.seq_tup_read, s.idx_tup_fetch, s.seq_scan, s.n_live_tup, ((io.heap_blks_hit + io.idx_blks_hit)/((io.heap_blks_read + io.idx_blks_read)::float))::decimal(18,4) cache_hit_ratio FROM pg_stat_user_tables s INNER JOIN pg_statio_user_tables io ON s.relid = io.relid WHERE s.seq_tup_read + s.idx_tup_fetch > 0 AND s.n_live_tup > 1000 ORDER BY usage desc, cache_hit_ratio desc, index_ratio ASC, s.seq_scan desc, s.n_live_tup desc)';
 -- List unused indexes
-\set index_never_used '(SELECT indexrelid::regclass as index, relid::regclass as table FROM pg_stat_user_indexes JOIN pg_index USING (indexrelid) WHERE idx_scan = 0 AND indisunique is false order by relid::regclass)';
+\set index_never_used '(SELECT indexrelid::regclass as index, quote_ident(relid)::regclass as table FROM pg_stat_user_indexes JOIN pg_index USING (indexrelid) WHERE idx_scan = 0 AND indisunique is false order by quote_ident(relid)::regclass)';
 -- Show duplicate indexes
-\set index_dups '(SELECT indrelid::regclass as table, array_agg(indexrelid::regclass) as duplicates FROM pg_index group by indrelid, indkey having count(*) > 1)';
+\set index_dups '(SELECT quote_ident(indrelid)::regclass as table, array_agg(quote_ident(indexrelid)::regclass) as duplicates FROM pg_index group by indrelid, indkey having count(*) > 1)';
 -- Show indexes that also exists in multi-key indexes
-\set index_in_multi '(SELECT a.indrelid::regclass as table_name, a.indexrelid::regclass, b.indexrelid::regclass FROM (SELECT *,array_to_string(indkey,\' \') as cols FROM pg_index) a JOIN (SELECT *,array_to_string(indkey,\' \') as cols FROM pg_index) b on (a.indrelid=b.indrelid AND a.indexrelid > b.indexrelid AND not a.indisunique AND not b.indisunique AND ((a.cols LIKE b.cols||\'%\' AND coalesce(substr(a.cols,length(b.cols)+1,1),\' \')=\' \') OR (b.cols LIKE a.cols||\'%\' AND coalesce(substr(b.cols,length(a.cols)+1,1),\' \')=\' \'))) ORDER BY table_name)';
+\set index_in_multi '(SELECT quote_ident(a.indrelid)::regclass as table_name, quote_ident(a.indexrelid)::regclass, quote_ident(b.indexrelid)::regclass FROM (SELECT *,array_to_string(indkey,\' \') as cols FROM pg_index) a JOIN (SELECT *,array_to_string(indkey,\' \') as cols FROM pg_index) b on (a.indrelid=b.indrelid AND a.indexrelid > b.indexrelid AND not a.indisunique AND not b.indisunique AND ((a.cols LIKE b.cols||\'%\' AND coalesce(substr(a.cols,length(b.cols)+1,1),\' \')=\' \') OR (b.cols LIKE a.cols||\'%\' AND coalesce(substr(b.cols,length(a.cols)+1,1),\' \')=\' \'))) ORDER BY table_name)';
 -- Show connected slaves
 \set slaves '(SELECT host(client_addr) as slave, state as state, backend_start as started FROM pg_stat_replication)';
 -- Show byde lag of slaves
